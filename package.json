@@ -4,7 +4,8 @@
   "description": "Solution for paint shop exercise",
   "main": "./src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive",
+    "start": "node ./src/app.js"
   },
   "repository": {
     "type": "git",
