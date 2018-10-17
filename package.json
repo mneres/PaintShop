@@ -1,0 +1,25 @@
+{
+  "name": "PaintShop",
+  "version": "1.0.0",
+  "description": "Solution for paint shop exercise",
+  "main": "./src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mneres/PaintShop.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mneres/PaintShop/issues"
+  },
+  "homepage": "https://github.com/mneres/PaintShop#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^5.2.0"
+  }
+}
