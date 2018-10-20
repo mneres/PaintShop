@@ -1,6 +1,7 @@
 const config = require("../../configurations/config.json");
 const textFileUtils = require("./textFileUtils");
-const Solution = require("../models/solution");
+const Request = require("../models/request");
+const Preference = require("../models/preference");
 
 class DataParser {
 
@@ -22,27 +23,22 @@ class DataParser {
           const availableFinishes = Object.keys(config.availableFinishes).map(
             key => key
           );
-          const customers = arr
+          const customerPreferences = arr
             .map(row => {
               return row.split(/\s+/);
             })
             .map(element => {
               return element.reduce((accumulator, currentValue) => {
                 if(this.isNumber(currentValue)) {
-                  accumulator.push({ color: parseInt(currentValue) });
+                  accumulator.push(new Preference(parseInt(currentValue)));
                 } else if (availableFinishes.includes(currentValue)) {
-                  accumulator[accumulator.length - 1].finish = currentValue;
-                } else {
-                  const previousObj = accumulator[accumulator.length - 1];
-                  if(!previousObj.hasOwnProperty('finish') || !previousObj.hasOwnProperty('color')){
-                    accumulator.pop();
-                  }
+                  accumulator[accumulator.length - 1].setFinish(currentValue);
                 }
                 return accumulator;
               }, []);
             });
-          const solution = new Solution({ colorsNo, customers });
-          return resolve(solution);
+          const request = new Request(colorsNo, customerPreferences);
+          return resolve(request);
         })
         .catch(err => {
           return reject(err);
