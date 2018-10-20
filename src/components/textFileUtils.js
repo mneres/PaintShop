@@ -18,4 +18,4 @@ class TextFileUtils {
   }
 }
 
-module.exports = TextFileUtils;
+module.exports = new TextFileUtils();
