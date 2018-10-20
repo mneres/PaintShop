@@ -1,4 +1,3 @@
-"use strict";
 const config = require("../configurations/config.json");
 const dataParser = require("./components/dataParser");
 

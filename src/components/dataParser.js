@@ -1,6 +1,6 @@
-"use strict";
 const config = require("../../configurations/config.json");
 const textFileUtils = require("./textFileUtils");
+const Solution = require("../models/solution");
 
 class DataParser {
 
@@ -41,7 +41,8 @@ class DataParser {
                 return accumulator;
               }, []);
             });
-          return resolve({ colorsNo, customers });
+          const solution = new Solution({ colorsNo, customers });
+          return resolve(solution);
         })
         .catch(err => {
           return reject(err);
