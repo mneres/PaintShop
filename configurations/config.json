@@ -4,6 +4,9 @@
     "M": 1
   },
   "test": {
-    "textFilePath": "assets/textFileTest1.txt"
+    "textFilePath": "assets/textFileTest1.txt",
+    "textFilePath2": "assets/textFileTest2.txt",
+    "textFilePath3": "assets/textFileTest3.txt",
+    "textFilePath4": "assets/textFileTest4.txt"
   }
 }

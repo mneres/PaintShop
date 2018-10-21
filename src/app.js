@@ -1,13 +1,25 @@
-const config = require("../configurations/config.json");
 const dataParser = require("./components/dataParser");
 const solver = require("./components/solver");
 
-dataParser.parseFileEntries(config.test.textFilePath)
+const usage = `
+  Usage:
+  ${process.argv[0]} ${process.argv[1]} <inputFile>
+`;
+
+const inputFile = process.argv[2];
+
+if (!inputFile) {
+  console.error('Missing input file argument');
+  console.log(usage);
+  return;
+}
+
+dataParser.parseFileEntries(inputFile)
   .then(request => {
-    console.log("request", request);
     let solution = solver.solveRequest(request);
-    console.log("solution", solution);
+    console.log(solution);
   })
   .catch(err => {
     console.error(err);
   });
+

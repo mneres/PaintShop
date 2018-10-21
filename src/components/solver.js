@@ -1,4 +1,5 @@
 const config = require("../../configurations/config.json");
+const Preference = require("../models/preference");
 
 const availableFinishes = config.availableFinishes;
 
@@ -34,23 +35,64 @@ function validateResult(colors, preferences) {
     ) {
       return false;
     }
-    result[preference.color - 1] = {...result[preference.color - 1], preference};
+    result[preference.color - 1] = preference;
     return true;
   });
 
-  if(!isResultValid){
+  if (!isResultValid) {
     return null;
   }
+
+  const finishToFillEmpty = Object.keys(availableFinishes)[0];
+
+  result = result.map((element, index) => {
+    if (element) {
+      return element;
+    }
+    return new Preference(index + 1, finishToFillEmpty);
+  });
+
   return result;
+}
+
+function convertResultToString(result) {
+  if (!result) {
+    return "No solution exists";
+  }
+  return result.map(r => r.finish).join(" ");
 }
 
 class Solver {
   constructor() {}
 
   solveRequest(request) {
-    let sortedPreferences = sortPreferences(request.getCustomerPreferences());
-    let test = sortedPreferences.map(preference => preference[0]);
-    return validateResult(request.getColorsNo(), test);
+    const sortedPreferences = sortPreferences(request.getCustomerPreferences());
+    const combinations = sortedPreferences.reduce(
+      (accumulator, preference) => accumulator * preference.length,
+      1
+    );
+
+    let validatedResult = null;
+    let lengths = sortedPreferences.map(preference => preference.length);
+
+    for (let i = 0; i < combinations; i++) {
+      let x = i;
+      const preferencesIndexes = lengths.map(length => {
+        const index = x % length;
+        x = Math.floor(x / length);
+        return index;
+      });
+      const result = preferencesIndexes.map(
+        (index, line) => sortedPreferences[line][index]
+      );
+      validatedResult = validateResult(request.getColorsNo(), result);
+      if (validatedResult) {
+        break;
+      }
+      continue;
+    }
+
+    return convertResultToString(validatedResult);
   }
 }
 
