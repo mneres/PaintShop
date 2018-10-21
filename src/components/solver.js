@@ -29,13 +29,13 @@ function validateResult(colors, preferences) {
   let result = Array.from({ length: colors }, i => null);
   const isResultValid = preferences.every(preference => {
     if (
-      result[preference.color - 1] &&
-      (result[preference.color - 1].unique || preference.unique) &&
-      result[preference.color - 1].finish !== preference.finish
+      result[preference.getColor() - 1] &&
+      (result[preference.getColor() - 1].getUnique() || preference.getUnique()) &&
+      result[preference.getColor() - 1].getFinish() !== preference.getFinish()
     ) {
       return false;
     }
-    result[preference.color - 1] = preference;
+    result[preference.getColor() - 1] = preference;
     return true;
   });
 
@@ -59,7 +59,7 @@ function convertResultToString(result) {
   if (!result) {
     return "No solution exists";
   }
-  return result.map(r => r.finish).join(" ");
+  return result.map(r => r.getFinish()).join(" ");
 }
 
 class Solver {
