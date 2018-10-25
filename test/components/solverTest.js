@@ -55,4 +55,16 @@ describe("Solver->solveRequest()", () => {
       }
     });
   });
+
+  it("should retrieve M G G as result", done => {
+    dataParser.parseFileEntries(config.test.textFilePath5).then(request => {
+      let solution = solver.solveRequest(request);
+      try {
+        expect(solution).to.be.equal("M G G");
+        return done();
+      } catch (ex) {
+        return done(ex);
+      }
+    });
+  });
 });

@@ -33,8 +33,16 @@ function validateResult(colors, preferences) {
       (result[preference.getColor() - 1].getUnique() || preference.getUnique()) &&
       result[preference.getColor() - 1].getFinish() !== preference.getFinish()
     ) {
+      //Solution not valid
       return false;
     }
+
+    if(result[preference.getColor() - 1] && 
+      !result[preference.getColor() - 1].getUnique()){
+        //In case the solution is valid and value should not be overwritten
+        return true;
+      }
+
     result[preference.getColor() - 1] = preference;
     return true;
   });
@@ -42,7 +50,6 @@ function validateResult(colors, preferences) {
   if (!isResultValid) {
     return null;
   }
-
   const finishToFillEmpty = Object.keys(availableFinishes)[0];
 
   result = result.map((element, index) => {
