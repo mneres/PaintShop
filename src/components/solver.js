@@ -3,6 +3,9 @@ const Preference = require("../models/preference");
 
 const availableFinishes = config.availableFinishes;
 
+const ERR_RESULT = "No solution exists";
+const MAX_SAFE_INTEGER = Number.MAX_SAFE_INTEGER;
+
 function sortCustomerByFinish(a, b) {
   if (availableFinishes[a.getFinish()] < availableFinishes[b.getFinish()]) {
     return -1;
@@ -64,7 +67,7 @@ function validateResult(colors, preferences) {
 
 function convertResultToString(result) {
   if (!result) {
-    return "No solution exists";
+    return ERR_RESULT;
   }
   return result.map(r => r.getFinish()).join(" ");
 }
@@ -75,9 +78,15 @@ class Solver {
   solveRequest(request) {
     const sortedPreferences = sortPreferences(request.getCustomerPreferences());
     const combinations = sortedPreferences.reduce(
-      (accumulator, preference) => accumulator * preference.length,
-      1
+      (acc, preference) => {
+        let calc = acc * preference.length;
+        return calc;
+      }, 1
     );
+
+    if(combinations > MAX_SAFE_INTEGER){
+      return ERR_RESULT;
+    }
 
     let validatedResult = null;
     let lengths = sortedPreferences.map(preference => preference.length);

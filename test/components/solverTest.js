@@ -7,6 +7,8 @@ const config = require("../../configurations/config");
 const solver = require("../../src/components/solver");
 const dataParser = require("../../src/components/dataParser");
 
+const ERR_RETURN = "No solution exists";
+
 describe("Solver->solveRequest()", () => {
   it("should retrieve G G G G M as result", done => {
     dataParser.parseFileEntries(config.test.textFilePath).then(request => {
@@ -20,11 +22,11 @@ describe("Solver->solveRequest()", () => {
     });
   });
 
-  it("should retrieve null as result", done => {
+  it("should retrieve error as result", done => {
     dataParser.parseFileEntries(config.test.textFilePath2).then(request => {
       let solution = solver.solveRequest(request);
       try {
-        expect(solution).to.be.equal("No solution exists");
+        expect(solution).to.be.equal(ERR_RETURN);
         return done();
       } catch (ex) {
         return done(ex);
@@ -61,6 +63,18 @@ describe("Solver->solveRequest()", () => {
       let solution = solver.solveRequest(request);
       try {
         expect(solution).to.be.equal("M G G");
+        return done();
+      } catch (ex) {
+        return done(ex);
+      }
+    });
+  });
+
+  it("should retrieve error as result", done => {
+    dataParser.parseFileEntries(config.test.textFilePath6).then(request => {
+      let solution = solver.solveRequest(request);
+      try {
+        expect(solution).to.be.equal(ERR_RETURN);
         return done();
       } catch (ex) {
         return done(ex);
